@@ -730,21 +730,21 @@
   }
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-var staticOptions = options.static
-var dynamicOptions = options.dynamic
+programList.length = 0;
+programCache = {};
 
-if (S_FRAMEBUFFER in staticOptions) {
-  var framebuffer = staticOptions[S_FRAMEBUFFER]
-  if (framebuffer) {
-    framebuffer = framebufferState.getFramebuffer(framebuffer)
-    check.<span class="apidocCodeKeywordSpan">command</span>(framebuffer, 'invalid framebuffer object')
-    return createStaticDecl(function (env, block) {
-      var FRAMEBUFFER = env.link(framebuffer)
-      var shared = env.shared
-      block.set(
-        shared.framebuffer,
-        '.next',
-        FRAMEBUFFER)
+stats.shaderCount = 0;
+    },
+
+    program: function (vertId, fragId, command) {
+check$1.<span class="apidocCodeKeywordSpan">command</span>(vertId &gt;= 0, 'missing vertex shader', command);
+check$1.command(fragId &gt;= 0, 'missing fragment shader', command);
+
+var cache = programCache[fragId];
+if (!cache) {
+  cache = programCache[fragId] = {};
+}
+var program = cache[vertId];
 ...</pre></li>
     </ul>
 
@@ -768,20 +768,20 @@ if (S_FRAMEBUFFER in staticOptions) {
     <li>example usage<pre class="apidocCodePre">...
 }
 
-var elements = parseElements()
+var elements = parseElements();
 
 function parsePrimitive () {
   if (S_PRIMITIVE in staticOptions) {
-    var primitive = staticOptions[S_PRIMITIVE]
-    check.<span class="apidocCodeKeywordSpan">commandParameter</span>(primitive, primTypes, 'invalid primitve', env.commandStr
-)
+    var primitive = staticOptions[S_PRIMITIVE];
+    check$1.<span class="apidocCodeKeywordSpan">commandParameter</span>(primitive, primTypes, 'invalid primitve', env.
+commandStr);
     return createStaticDecl(function (env, scope) {
       return primTypes[primitive]
     })
   } else if (S_PRIMITIVE in dynamicOptions) {
-    var dynPrimitive = dynamicOptions[S_PRIMITIVE]
+    var dynPrimitive = dynamicOptions[S_PRIMITIVE];
     return createDynamicDecl(dynPrimitive, function (env, scope) {
-      var PRIM_TYPES = env.constants.primTypes
+      var PRIM_TYPES = env.constants.primTypes;
 ...</pre></li>
     </ul>
 
@@ -801,22 +801,22 @@ function parsePrimitive () {
     (callSite === 'unknown' ? '' : ' called from ' + callSite))
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-check.optional(function () {
-  env.CHECK = link(check)
-  env.commandStr = check.guessCommand()
-  env.command = link(env.commandStr)
+check$1.optional(function () {
+  env.CHECK = link(check$1);
+  env.commandStr = check$1.guessCommand();
+  env.command = link(env.commandStr);
   env.assert = function (block, pred, message) {
     block(
       'if(!(', pred, '))',
       this.CHECK, '.<span class="apidocCodeKeywordSpan">commandRaise</span>(', link(message), ',', this.command
-, ');')
-  }
+, ');');
+  };
 
-  sharedConstants.invalidBlendCombinations = invalidBlendCombinations
-})
+  sharedConstants.invalidBlendCombinations = invalidBlendCombinations;
+});
 
 // Copy GL state variables over
-var nextVars = env.next = {}
+var nextVars = env.next = {};
 ...</pre></li>
     </ul>
 
@@ -839,21 +839,21 @@ var nextVars = env.next = {}
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
   function parseViewportScissor (options, framebuffer, env) {
-    var staticOptions = options.static
-    var dynamicOptions = options.dynamic
+    var staticOptions = options.static;
+    var dynamicOptions = options.dynamic;
 
     function parseBox (param) {
       if (param in staticOptions) {
-var box = staticOptions[param]
-check.<span class="apidocCodeKeywordSpan">commandType</span>(box, 'object', 'invalid ' + param, env.commandStr
-)
+var box = staticOptions[param];
+check$1.<span class="apidocCodeKeywordSpan">commandType</span>(box, 'object', 'invalid ' + param, env.commandStr
+);
 
-var isStatic = true
-var x = box.x | 0
-var y = box.y | 0
-var w, h
+var isStatic = true;
+var x = box.x | 0;
+var y = box.y | 0;
+var w, h;
 if ('width' in box) {
-  w = box.width | 0
+  w = box.width | 0;
 ...</pre></li>
     </ul>
 
@@ -876,18 +876,18 @@ if ('width' in box) {
     <li>example usage<pre class="apidocCodePre">...
   } else if (typeof args === 'object') {
 if (isHTMLElement(args)) {
-  element = args
+  element = args;
 } else if (isWebGLContext(args)) {
-  gl = args
-  canvas = gl.canvas
+  gl = args;
+  canvas = gl.canvas;
 } else {
-  check.<span class="apidocCodeKeywordSpan">constructor</span>(args)
+  check$1.<span class="apidocCodeKeywordSpan">constructor</span>(args);
   if ('gl' in args) {
-    gl = args.gl
+    gl = args.gl;
   } else if ('canvas' in args) {
-    canvas = getElement(args.canvas)
+    canvas = getElement(args.canvas);
   } else if ('container' in args) {
-    container = getElement(args.container)
+    container = getElement(args.container);
   }
 ...</pre></li>
     </ul>
@@ -941,19 +941,19 @@ if (isHTMLElement(args)) {
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 Object.keys(sharedState).forEach(function (prop) {
-  shared[prop] = global.def(SHARED, '.', prop)
-})
+  shared[prop] = global.def(SHARED, '.', prop);
+});
 
 // Inject runtime assertion stuff for debug builds
-check.optional(function () {
-  env.CHECK = link(check)
-  env.commandStr = check.<span class="apidocCodeKeywordSpan">guessCommand</span>()
-  env.command = link(env.commandStr)
+check$1.optional(function () {
+  env.CHECK = link(check$1);
+  env.commandStr = check$1.<span class="apidocCodeKeywordSpan">guessCommand</span>();
+  env.command = link(env.commandStr);
   env.assert = function (block, pred, message) {
     block(
       'if(!(', pred, '))',
-      this.CHECK, '.commandRaise(', link(message), ',', this.command, ');')
-  }
+      this.CHECK, '.commandRaise(', link(message), ',', this.command, ');');
+  };
 ...</pre></li>
     </ul>
 
@@ -974,21 +974,22 @@ check.optional(function () {
   }
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-    data = new Uint8Array(size)
-  } else if (type === GL_FLOAT) {
-    data = data || new Float32Array(size)
+    data = new Uint8Array(size);
+  } else if (type === GL_FLOAT$6) {
+    data = data || new Float32Array(size);
   }
 }
 
 // Type check
-check.<span class="apidocCodeKeywordSpan">isTypedArray</span>(data, 'data buffer for regl.read() must be a typedarray')
-check(data.byteLength &gt;= size, 'data buffer for regl.read() too small')
+check$1.<span class="apidocCodeKeywordSpan">isTypedArray</span>(data, 'data buffer for regl.read() must be a typedarray'
+;);
+check$1(data.byteLength &gt;= size, 'data buffer for regl.read() too small');
 
 // Run read pixels
-gl.pixelStorei(GL_PACK_ALIGNMENT, 4)
-gl.readPixels(x, y, width, height, GL_RGBA,
+gl.pixelStorei(GL_PACK_ALIGNMENT, 4);
+gl.readPixels(x, y, width, height, GL_RGBA$2,
               type,
-              data)
+              data);
 ...</pre></li>
     </ul>
 
@@ -1021,19 +1022,19 @@ gl.readPixels(x, y, width, height, GL_RGBA,
   }
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-var fragShader = getShader(GL_FRAGMENT_SHADER, desc.fragId)
-var vertShader = getShader(GL_VERTEX_SHADER, desc.vertId)
+var fragShader = getShader(GL_FRAGMENT_SHADER, desc.fragId);
+var vertShader = getShader(GL_VERTEX_SHADER, desc.vertId);
 
-var program = desc.program = gl.createProgram()
-gl.attachShader(program, fragShader)
-gl.attachShader(program, vertShader)
-gl.linkProgram(program)
-check.<span class="apidocCodeKeywordSpan">linkError</span>(
+var program = desc.program = gl.createProgram();
+gl.attachShader(program, fragShader);
+gl.attachShader(program, vertShader);
+gl.linkProgram(program);
+check$1.<span class="apidocCodeKeywordSpan">linkError</span>(
   gl,
   program,
   stringStore.str(desc.fragId),
   stringStore.str(desc.vertId),
-  command)
+  command);
 
 // -------------------------------
 ...</pre></li>
@@ -1058,19 +1059,19 @@ check.<span class="apidocCodeKeywordSpan">linkError</span>(
     <li>example usage<pre class="apidocCodePre">...
 
   if ('dimension' in options) {
-    check.type(options.dimension, 'number', 'invalid dimension')
-    dimension = options.dimension | 0
+    check$1.type(options.dimension, 'number', 'invalid dimension');
+    dimension = options.dimension | 0;
   }
 
   if ('length' in options) {
-    check.<span class="apidocCodeKeywordSpan">nni</span>(byteLength, 'buffer length must be a nonnegative integer')
-    byteLength = options.length | 0
+    check$1.<span class="apidocCodeKeywordSpan">nni</span>(byteLength, 'buffer length must be a nonnegative integer');
+    byteLength = options.length | 0;
   }
 }
 
-buffer.bind()
+buffer.bind();
 if (!data) {
-  gl.bufferData(buffer.type, byteLength, usage)
+  gl.bufferData(buffer.type, byteLength, usage);
 ...</pre></li>
     </ul>
 
@@ -1089,21 +1090,21 @@ if (!data) {
   }
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-    check(extensions.oes_texture_float ||
-      !(colorType === 'float' || colorType === 'float32'),
-      'you must enable OES_texture_float in order to use floating point framebuffer objects')
-    check(extensions.oes_texture_half_float ||
-      !(colorType === 'half float' || colorType === 'float16'),
-      'you must enable OES_texture_half_float in order to use 16-bit floating point framebuffer objects')
-  }
-  check.<span class="apidocCodeKeywordSpan">oneOf</span>(colorType, colorTypes, 'invalid color type')
+if ('flipY' in options) {
+  check$1.type(options.flipY, 'boolean',
+    'invalid texture flip');
+  flags.flipY = options.flipY;
 }
 
-if ('colorFormat' in options) {
-  colorFormat = options.colorFormat
-  if (colorTextureFormats.indexOf(colorFormat) &gt;= 0) {
-    colorTexture = true
-  } else if (colorRenderbufferFormats.indexOf(colorFormat) &gt;= 0) {
+if ('alignment' in options) {
+  check$1.<span class="apidocCodeKeywordSpan">oneOf</span>(options.alignment, [1, 2, 4, 8],
+    'invalid texture unpack alignment');
+  flags.unpackAlignment = options.alignment;
+}
+
+if ('colorSpace' in options) {
+  check$1.parameter(options.colorSpace, colorSpace,
+    'invalid colorSpace');
 ...</pre></li>
     </ul>
 
@@ -1125,14 +1126,14 @@ if ('colorFormat' in options) {
   stencilOps: stencilOps,
   glTypes: glTypes,
   orientationType: orientationType
-}
+};
 
-check.<span class="apidocCodeKeywordSpan">optional</span>(function () {
-  sharedState.isArrayLike = isArrayLike
-})
+check$1.<span class="apidocCodeKeywordSpan">optional</span>(function () {
+  sharedState.isArrayLike = isArrayLike;
+});
 
 if (extDrawBuffers) {
-  sharedConstants.backBuffer = [GL_BACK]
+  sharedConstants.backBuffer = [GL_BACK];
   sharedConstants.drawBuffer = loop(limits.maxDrawbuffers, function (i) {
     if (i === 0) {
 ...</pre></li>
@@ -1156,18 +1157,18 @@ if (extDrawBuffers) {
     <li>example usage<pre class="apidocCodePre">...
     isTypedArray(data) ||
     isNDArrayLike(data),
-    'invalid data for buffer')
-  data = options.data
+    'invalid data for buffer');
+  data = options.data;
 }
 
 if ('usage' in options) {
-  check.<span class="apidocCodeKeywordSpan">parameter</span>(options.usage, usageTypes, 'invalid buffer usage')
-  usage = usageTypes[options.usage]
+  check$1.<span class="apidocCodeKeywordSpan">parameter</span>(options.usage, usageTypes, 'invalid buffer usage');
+  usage = usageTypes[options.usage];
 }
 
 if ('type' in options) {
-  check.parameter(options.type, bufferTypes, 'invalid buffer type')
-  dtype = bufferTypes[options.type]
+  check$1.parameter(options.type, glTypes, 'invalid buffer type');
+  dtype = glTypes[options.type];
 }
 ...</pre></li>
     </ul>
@@ -1344,15 +1345,15 @@ function REGLCommand (args, body) {
   }
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-  var shader = cache[id]
+  var shader = cache[id];
 
   if (!shader) {
-    var source = stringStore.str(id)
-    shader = gl.createShader(type)
-    gl.shaderSource(shader, source)
-    gl.compileShader(shader)
-    check.<span class="apidocCodeKeywordSpan">shaderError</span>(gl, shader, source, type, command)
-    cache[id] = shader
+    var source = stringStore.str(id);
+    shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    check$1.<span class="apidocCodeKeywordSpan">shaderError</span>(gl, shader, source, type, command);
+    cache[id] = shader;
   }
 
   return shader
@@ -1460,20 +1461,20 @@ function REGLCommand (args, body) {
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 if (texInfo.genMipmaps) {
-  mipData.mipmask = (mipData.width &lt;&lt; 1) - 1
+  mipData.mipmask = (mipData.width &lt;&lt; 1) - 1;
 }
-texture.mipmask = mipData.mipmask
+texture.mipmask = mipData.mipmask;
 
-copyFlags(texture, mipData)
+copyFlags(texture, mipData);
 
-check.<span class="apidocCodeKeywordSpan">texture2D</span>(texInfo, mipData, limits)
-texture.internalformat = mipData.internalformat
+check$1.<span class="apidocCodeKeywordSpan">texture2D</span>(texInfo, mipData, limits);
+texture.internalformat = mipData.internalformat;
 
-reglTexture2D.width = mipData.width
-reglTexture2D.height = mipData.height
+reglTexture2D.width = mipData.width;
+reglTexture2D.height = mipData.height;
 
-tempBind(texture)
-setMipMap(mipData, GL_TEXTURE_2D)
+tempBind(texture);
+setMipMap(mipData, GL_TEXTURE_2D);
 ...</pre></li>
     </ul>
 
@@ -1550,20 +1551,20 @@ setMipMap(mipData, GL_TEXTURE_2D)
   }
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-copyFlags(texture, faces[0])
+copyFlags(texture, faces[0]);
 if (texInfo.genMipmaps) {
-  texture.mipmask = (faces[0].width &lt;&lt; 1) - 1
+  texture.mipmask = (faces[0].width &lt;&lt; 1) - 1;
 } else {
-  texture.mipmask = faces[0].mipmask
+  texture.mipmask = faces[0].mipmask;
 }
 
-check.<span class="apidocCodeKeywordSpan">textureCube</span>(texture, texInfo, faces, limits)
-texture.internalformat = faces[0].internalformat
+check$1.<span class="apidocCodeKeywordSpan">textureCube</span>(texture, texInfo, faces, limits);
+texture.internalformat = faces[0].internalformat;
 
-reglTextureCube.width = faces[0].width
-reglTextureCube.height = faces[0].height
+reglTextureCube.width = faces[0].width;
+reglTextureCube.height = faces[0].height;
 
-tempBind(texture)
+tempBind(texture);
 for (i = 0; i &lt; 6; ++i) {
 ...</pre></li>
     </ul>
@@ -1624,9 +1625,9 @@ function flattenNestedOptions (options) {
     <li>example usage<pre class="apidocCodePre">...
       return
     }
-    var ref = env.invoke(block, value)
-    block(objectRef, '.', key, '=', ref, ';')
-  })
+    var ref = env.invoke(block, value);
+    block(objectRef, '.', key, '=', ref, ';');
+  });
 }
 
 options.dynamic[name] = new dynamic.<span class="apidocCodeKeywordSpan">DynamicVariable</span>(DYN_THUNK, {
@@ -1635,8 +1636,8 @@ options.dynamic[name] = new dynamic.<span class="apidocCodeKeywordSpan">DynamicV
   propDep: propDep,
   ref: objectRef,
   append: appendBlock
-})
-delete options.static[name]
+});
+delete options.static[name];
 ...</pre></li>
     </ul>
 
@@ -1779,20 +1780,20 @@ return {
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 }
-var arrayShape = flattenUtils.shape(data)
-var n = 1
+var arrayShape = flattenUtils.shape(data);
+var n = 1;
 for (var dd = 0; dd &lt; arrayShape.length; ++dd) {
-  n *= arrayShape[dd]
+  n *= arrayShape[dd];
 }
-var allocData = preConvert(image, n)
-flattenUtils.<span class="apidocCodeKeywordSpan">flatten</span>(data, arrayShape, '', allocData)
-postConvert(image, allocData)
-image.alignment = 1
-image.width = w
-image.height = h
-image.channels = c
-image.format = image.internalformat = CHANNELS_FORMAT[c]
-image.needsFree = true
+var allocData = preConvert(image, n);
+flattenUtils.<span class="apidocCodeKeywordSpan">flatten</span>(data, arrayShape, '', allocData);
+postConvert(image, allocData);
+image.alignment = 1;
+image.width = w;
+image.height = h;
+image.channels = c;
+image.format = image.internalformat = CHANNELS_FORMAT[c];
+image.needsFree = true;
 ...</pre></li>
     </ul>
 
@@ -1813,21 +1814,21 @@ image.needsFree = true
   return shape
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-var h = image.height || data.length
-var c = image.channels
+var h = image.height || data.length;
+var c = image.channels;
 if (isArrayLike(data[0][0])) {
-  c = c || data[0][0].length
+  c = c || data[0][0].length;
 } else {
-  c = c || 1
+  c = c || 1;
 }
-var arrayShape = flattenUtils.<span class="apidocCodeKeywordSpan">shape</span>(data)
-var n = 1
+var arrayShape = flattenUtils.<span class="apidocCodeKeywordSpan">shape</span>(data);
+var n = 1;
 for (var dd = 0; dd &lt; arrayShape.length; ++dd) {
-  n *= arrayShape[dd]
+  n *= arrayShape[dd];
 }
-var allocData = preConvert(image, n)
-flattenUtils.flatten(data, arrayShape, '', allocData)
-postConvert(image, allocData)
+var allocData = preConvert(image, n);
+flattenUtils.flatten(data, arrayShape, '', allocData);
+postConvert(image, allocData);
 ...</pre></li>
     </ul>
 
@@ -1898,21 +1899,21 @@ postConvert(image, allocData)
   return result
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-  if (persist) {
-    buffer.persistentData = flatData
-  } else {
-    pool.freeType(flatData)
+if (shape.length) {
+  for (var i = 0; i &lt; shape.length; ++i) {
+    sz *= shape[i];
   }
-} else if (typeof data[0] === 'number') {
-  buffer.dimension = dimension
-  var typedData = pool.<span class="apidocCodeKeywordSpan">allocType</span>(buffer.dtype, data.length)
-  copyArray(typedData, data)
-  initBufferFromTypedArray(buffer, typedData, usage)
-  if (persist) {
-    buffer.persistentData = typedData
-  } else {
-    pool.freeType(typedData)
-  }
+} else {
+  sz = 0;
+}
+var out = out_ || pool.<span class="apidocCodeKeywordSpan">allocType</span>(type, sz);
+switch (shape.length) {
+  case 0:
+    break
+  case 1:
+    flatten1D(array, shape[0], out);
+    break
+  case 2:
 ...</pre></li>
     </ul>
 
@@ -1945,19 +1946,19 @@ postConvert(image, allocData)
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
   }
-  buffer.dimension = dim
-  flatData = arrayFlatten(data, shape, buffer.dtype)
-  initBufferFromTypedArray(buffer, flatData, usage)
+  buffer.dimension = dim;
+  flatData = arrayFlatten(data, shape, buffer.dtype);
+  initBufferFromTypedArray(buffer, flatData, usage);
   if (persist) {
-    buffer.persistentData = flatData
+    buffer.persistentData = flatData;
   } else {
-    pool.<span class="apidocCodeKeywordSpan">freeType</span>(flatData)
+    pool.<span class="apidocCodeKeywordSpan">freeType</span>(flatData);
   }
 } else if (typeof data[0] === 'number') {
-  buffer.dimension = dimension
-  var typedData = pool.allocType(buffer.dtype, data.length)
-  copyArray(typedData, data)
-  initBufferFromTypedArray(buffer, typedData, usage)
+  buffer.dimension = dimension;
+  var typedData = pool.allocType(buffer.dtype, data.length);
+  copyArray(typedData, data);
+  initBufferFromTypedArray(buffer, typedData, usage);
   if (persist) {
 ...</pre></li>
     </ul>
@@ -1987,20 +1988,22 @@ postConvert(image, allocData)
   }
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-  if (!activeRAF &amp;&amp; rafCallbacks.length &gt; 0) {
-    activeRAF = raf.next(handleRAF)
-  }
-}
 
-function stopRAF () {
-  if (activeRAF) {
-    raf.<span class="apidocCodeKeywordSpan">cancel</span>(handleRAF)
-    activeRAF = null
-  }
-}
+  // context is the default state of the regl context variables
 
-function handleContextLoss (event) {
-  event.preventDefault()
+  // ...
+})
+
+// When we are done, we can unsubscribe by calling cancel on the callback
+tick.<span class="apidocCodeKeywordSpan">cancel</span>()
+```
+
+It is possible to manage framecallbacks manually, however before any loop it is essential to call `regl.poll()` which updates all
+ timers and viewports.
+
+* * *
+
+### Extensions
 ...</pre></li>
     </ul>
 

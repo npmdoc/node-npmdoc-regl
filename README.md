@@ -1,6 +1,6 @@
 # npmdoc-regl
 
-#### api documentation for  [regl (v1.3.0)](https://mikolalysenko.github.io/regl)  [![npm package](https://img.shields.io/npm/v/npmdoc-regl.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-regl) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-regl.svg)](https://travis-ci.org/npmdoc/node-npmdoc-regl)
+#### basic api documentation for  [regl (v1.3.0)](https://mikolalysenko.github.io/regl)  [![npm package](https://img.shields.io/npm/v/npmdoc-regl.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-regl) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-regl.svg)](https://travis-ci.org/npmdoc/node-npmdoc-regl)
 
 #### regl is a fast functional WebGL framework.
 
@@ -172,7 +172,8 @@
             "example/util/ammo.js"
         ]
     },
-    "version": "1.3.0"
+    "version": "1.3.0",
+    "bin": {}
 }
 ```
 
